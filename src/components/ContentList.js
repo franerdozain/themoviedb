@@ -1,11 +1,18 @@
 import { useState } from 'react'
 import Card from './Card'
 
-export default function ContentList () {
-    const [content, setContent] = useState([])
+export default function ContentList ({ content }) {
+    // const [content, setContent] = useState([])
+    
+
     return (
         <>
-         {content.map(item => <Card />)}             
+         {content.length ? (
+            content.map(item => <Card key={item.id} item={item}/>)
+            ) : (
+                <h1>Nothing to show</h1>
+            )
+         }             
         </>
     )
 }
