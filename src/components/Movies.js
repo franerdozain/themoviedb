@@ -9,6 +9,7 @@ export default function Movies() {
         async function fetchMovies() {
             try {
                 const data =  await getMovies();
+                // const data = location.pathname === "/movies" ? await getMovies() : await getMoviesByGenre(genre)
                 setMovies(data);
             } catch (error) {
                 console.log("Error: ", error);
@@ -23,3 +24,5 @@ export default function Movies() {
         </>
     )
 }
+
+//
