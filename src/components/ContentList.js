@@ -2,8 +2,7 @@ import { useState } from 'react'
 import Card from './Card'
 
 export default function ContentList ({ content }) {
-    // const [content, setContent] = useState([])
-    
+    // const [content, setContent] = useState([])    
 
     return (
         <>

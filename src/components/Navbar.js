@@ -1,22 +1,37 @@
 import { useEffect, useState } from "react";
 import { getGenres } from "./Api";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function Navbar() {
-    const [genres, setGenres] = useState([])
-    const location = useLocation()
-    useEffect(() => {
+export default function Navbar({ setGenreId }) {
+    const [genres, setGenres] = useState([]);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {   
         const fetchGenres = async (type) => {
             const data = await getGenres(type)
-
-            setGenres(data)
+            setGenres(data)    
+            let genre = data.find(genre => genre.name === separateUrl[2])    
+            genre && setGenreId(genre.id)
         }
         const types = {
-            "/movies": "movie",
-            "/tvShows": "tv",
+            "movies": "movie",
+            "tvShows": "tv",
         }
-        location.pathname !== "/" && fetchGenres(types[location.pathname]);
-    }, [location.pathname])
+        const separateUrl = location.pathname.split("/")   
+        location.pathname !== "/" && fetchGenres(types[separateUrl[1]]);
+    }, [location.pathname]) 
+
+    const handleCLick = (event) => {       
+        let genre = genres.find(genre => genre.name === event.target.innerText); 
+        console.log("event.target.innerText", event.target.innerText, "genre.name", genre.name);
+           
+        genre && setGenreId(genre.id);
+        const separateUrl = location.pathname.split("/");
+        const mediaType = separateUrl[1]; 
+        console.log("1", mediaType,"/",genre.name);
+        navigate(`/${mediaType}/${genre.name}`);    
+    }    
 
     return (
         <nav>
@@ -27,18 +42,12 @@ export default function Navbar() {
                     </button>
                     <ul className="dropdown-menu">
                         {genres.length &&
-                            genres.map(genre => (
-                                <Link
-                                    key={genre.id}
-                                    to={`/movies/${genre.name}`}
-                                >
-                                    <li className="dropdown-item">{genre.name}</li>
-                                </Link>
+                            genres.map(genre => (                               
+                                    <li key={genre.id} className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>                                
                             ))}
                     </ul>
                 </div>
             }
         </nav>
-
     )
 }
