@@ -48,3 +48,13 @@ export async function getTvShowsByGenre (genreId) {
         console.log("Error: ", error);
     }
 }
+
+export async function getTitleDetails (type, id) {
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=e8451889c3502a8ef498aca6808d883d`);
+        const data = await response.json();
+        return data 
+    } catch (error) {
+        console.log("Error: ", error);
+    }
+}

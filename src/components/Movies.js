@@ -4,7 +4,7 @@ import { getMovies } from './Api';
 import { useLocation } from 'react-router-dom';
 import { getMoviesByGenre } from './Api';
 
-export default function Movies({ genreId }) {
+export default function Movies({ genreId, setSelectedTitle }) {
     const [movies, setMovies] = useState([]);
     const location = useLocation();
     
@@ -21,7 +21,7 @@ export default function Movies({ genreId }) {
     }, [location.pathname, genreId])
     return (
         <>
-            <ContentList content={movies}/>
+            <ContentList content={movies} setSelectedTitle={setSelectedTitle}/>
         </>
     )
 }

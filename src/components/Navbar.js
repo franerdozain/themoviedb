@@ -6,8 +6,11 @@ export default function Navbar({ setGenreId }) {
     const [genres, setGenres] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
-
+    
     useEffect(() => {   
+        const separateUrl = location.pathname.split("/");   
+        const decodedUrlGenre = decodeURIComponent(separateUrl[2]);
+        
         const fetchGenres = async (type) => {
             const data = await getGenres(type)
             setGenres(data)                            
@@ -18,9 +21,8 @@ export default function Navbar({ setGenreId }) {
             "movies": "movie",
             "tvShows": "tv",
         }
-        const separateUrl = location.pathname.split("/")   
-        const decodedUrlGenre = decodeURIComponent(separateUrl[2])
-        location.pathname !== "/" && fetchGenres(types[separateUrl[1]]);
+        console.log(location.pathname.includes("title"));
+        location.pathname !== "/" && !location.pathname.includes("/title") && fetchGenres(types[separateUrl[1]]);
     }, [location.pathname]) 
 
     const handleCLick = (event) => {       
