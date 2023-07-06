@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useEffect } from "react"
 
 export default function TitleCard({ titleDetails }) {
-    const [selectedTitle, setSelectedTitle] = useState(null)
-    const location = useLocation();
     useEffect(() => {
         const fetchTitle = async (titleDetails) => {
             try {
@@ -15,7 +12,6 @@ export default function TitleCard({ titleDetails }) {
         }
         fetchTitle(titleDetails)
     }, [])
-
 
     return (
         <>
