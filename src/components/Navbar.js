@@ -10,8 +10,8 @@ export default function Navbar({ setGenreId }) {
     useEffect(() => {   
         const fetchGenres = async (type) => {
             const data = await getGenres(type)
-            setGenres(data)    
-            let genre = data.find(genre => genre.name === separateUrl[2])    
+            setGenres(data)                            
+            let genre = data.find(genre => genre.name === decodedUrlGenre)    
             genre && setGenreId(genre.id)
         }
         const types = {
@@ -19,17 +19,15 @@ export default function Navbar({ setGenreId }) {
             "tvShows": "tv",
         }
         const separateUrl = location.pathname.split("/")   
+        const decodedUrlGenre = decodeURIComponent(separateUrl[2])
         location.pathname !== "/" && fetchGenres(types[separateUrl[1]]);
     }, [location.pathname]) 
 
     const handleCLick = (event) => {       
-        let genre = genres.find(genre => genre.name === event.target.innerText); 
-        console.log("event.target.innerText", event.target.innerText, "genre.name", genre.name);
-           
+        let genre = genres.find(genre => genre.name === event.target.innerText);            
         genre && setGenreId(genre.id);
         const separateUrl = location.pathname.split("/");
-        const mediaType = separateUrl[1]; 
-        console.log("1", mediaType,"/",genre.name);
+        const mediaType = separateUrl[1];        
         navigate(`/${mediaType}/${genre.name}`);    
     }    
 

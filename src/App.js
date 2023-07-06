@@ -17,7 +17,7 @@ function App() {
         <Route path='/movies' element={<Movies />} />
         <Route path='/tvShows' element={<Tv />} />  
         <Route path='/movies/:genre' element={<Movies genreId={genreId}/>} />
-        <Route path='/tvShows/:genre' element={<Tv genreId={genreId} />} /> 
+        <Route path='/tvShows/:genre' element={<Tv genreId={genreId} />} />        
       </Routes>
     </div>
 
