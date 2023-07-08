@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getGenres } from "./Api";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../images/logo.png" 
 
 export default function Navbar({ setGenreId }) {
     const [genres, setGenres] = useState([]);
@@ -29,12 +30,18 @@ export default function Navbar({ setGenreId }) {
         let genre = genres.find(genre => genre.name === event.target.innerText);            
         genre && setGenreId(genre.id);
         const separateUrl = location.pathname.split("/");
-        const mediaType = separateUrl[1];        
-        navigate(`/${mediaType}/${genre.name}`);    
-    }    
+        const mediaType = separateUrl[1];
+        navigate(`/${mediaType}/${genre.name}`);
+    }
 
     return (
         <nav>
+            <div className='d-flex justify-content-center align-items-center'>
+                <Link to={"/"}>
+                    <span role="button" ><img src={logo} className='homeLogo' /></span>
+                </Link>
+                <h1>Movies & TV Shows</h1>
+            </div>
             {location.pathname !== "/" &&
                 <div className="dropdown col-sm-4">
                     <button className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" aria-expanded="false" >
@@ -42,8 +49,8 @@ export default function Navbar({ setGenreId }) {
                     </button>
                     <ul className="dropdown-menu">
                         {genres.length &&
-                            genres.map(genre => (                               
-                                    <li key={genre.id} className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>                                
+                            genres.map(genre => (
+                                <li key={genre.id} className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>
                             ))}
                     </ul>
                 </div>
