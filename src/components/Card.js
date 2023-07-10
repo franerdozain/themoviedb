@@ -1,15 +1,10 @@
-import { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
-import SearchBar from "./SearchBar";
 
 export default function Card({ item, setSelectedTitle }) {
     const navigate = useNavigate();
     const location = useLocation();   
     
     const handleClick = () => {        
-        const separateUrl = location.pathname.split("/");
-        const mediaType = separateUrl[1]; 
-        const genre = separateUrl[2];
         const title =  item.name || item.original_title
         setSelectedTitle(item)
         navigate(`/title/${title}`, {state: {section: location.pathname}});  

@@ -6,7 +6,6 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar';
 import { useState } from 'react';
 import TitlePage from './components/TitlePage';
-import SearchBar from './components/SearchBar';
 
 function App() {
   const [genreId, setGenreId] = useState(null);

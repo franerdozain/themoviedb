@@ -1,21 +1,6 @@
-import { useEffect } from "react"
-import SearchBar from "./SearchBar";
-
 export default function TitleCard({ titleDetails }) {
-    // useEffect(() => {
-    //     const fetchTitle = async (titleDetails) => {
-    //         try {
-    //             const response = await fetch(titleDetails);
-    //             const data = await response.json();
-    //         } catch (error) {
-    //             console.log("Error: ", error);  
-    //         }
-    //     }
-    //     titleDetails && fetchTitle(titleDetails)
-    // }, [])
-
     return (
-        <>        
+        <>
             {titleDetails && (
                 <div className="col-12 col-md-12">
                     <div className="card">

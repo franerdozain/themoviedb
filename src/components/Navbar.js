@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { getGenres } from "./Api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../images/logo.png" 
+import logo from "../images/logo.png"
 import SearchBar from "./SearchBar";
 
 export default function Navbar({ setGenreId }) {
     const [genres, setGenres] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
-    
-    useEffect(() => {   
-        const separateUrl = location.pathname.split("/");   
+
+    useEffect(() => {
+        const separateUrl = location.pathname.split("/");
         const decodedUrlGenre = decodeURIComponent(separateUrl[2]);
-        
+
         const fetchGenres = async (type) => {
             const data = await getGenres(type)
-            setGenres(data)                            
-            let genre = data.find(genre => genre.name === decodedUrlGenre)    
+            setGenres(data)
+            let genre = data.find(genre => genre.name === decodedUrlGenre)
             genre && setGenreId(genre.id)
         }
         const types = {
@@ -24,17 +24,17 @@ export default function Navbar({ setGenreId }) {
             "tvShows": "tv",
         }
         location.pathname !== "/" && !location.pathname.includes("/title") && fetchGenres(types[separateUrl[1]]);
-    }, [location.pathname]) 
+    }, [location.pathname])
 
-    const handleCLick = (event) => {       
-        let genre = genres.find(genre => genre.name === event.target.innerText);            
+    const handleCLick = (event) => {
+        let genre = genres.find(genre => genre.name === event.target.innerText);
         genre && setGenreId(genre.id);
         const separateUrl = location.pathname.split("/");
         const mediaType = separateUrl[1];
         navigate(`/${mediaType}/${genre.name}`);
     }
 
-    return (    
+    return (
         <nav>
             <div className='d-flex justify-content-center align-items-center'>
                 <Link to={"/"}>
@@ -51,12 +51,12 @@ export default function Navbar({ setGenreId }) {
                         {genres.length &&
                             genres.map(genre => (
                                 <li key={genre.id} className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>
-                                ))}
+                            ))}
                     </ul>
                     <SearchBar />
                 </div>
             }
-            
+
         </nav>
     )
 }
