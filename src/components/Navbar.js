@@ -29,9 +29,15 @@ export default function Navbar({ setGenreId }) {
     const handleCLick = (event) => {
         let genre = genres.find(genre => genre.name === event.target.innerText);
         genre && setGenreId(genre.id);
+        let path = "";
         const separateUrl = location.pathname.split("/");
-        const mediaType = separateUrl[1];
-        navigate(`/${mediaType}/${genre.name}`);
+        if(separateUrl[1] === "title" && location.state && location.state.section){
+            path = location.state.section.startsWith("/movies") ? "movies" : "tvShows"  
+        } else if (separateUrl[1] === "movies" || separateUrl[1] === "tvShows"){
+            path = separateUrl[1] === "movies" ? "movies" : "tvShows";
+        }
+        
+        navigate(`/${path}/${genre.name}`);
     }
 
     return (

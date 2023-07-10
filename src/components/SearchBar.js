@@ -14,7 +14,7 @@ export default function SearchBar() {
             searchPath = `${paths[1]}?search=${searchInput}`
             inputRef.current.value = "";
         }
-        if (location.state) {
+        if (location.state && location.state.section) {
             searchPath = `${location.state.section}?search=${searchInput}`
             inputRef.current.value = "";
         }

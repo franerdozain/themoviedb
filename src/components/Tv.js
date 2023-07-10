@@ -9,12 +9,10 @@ export default function Tv({ genreId, setSelectedTitle }) {
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        console.log("inicio useef");
         async function fetchTvShows() {
             let data = "";
             const searchParam = searchParams.get("search");
-            console.log("este", searchParam);
-
+            
             try {
                 if (searchParam) {
                     data = await getSearchedTitle("tv", searchParam)
