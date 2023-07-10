@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 export default function Card({ item, setSelectedTitle }) {
     const navigate = useNavigate();
@@ -11,11 +12,10 @@ export default function Card({ item, setSelectedTitle }) {
         const genre = separateUrl[2];
         const title =  item.name || item.original_title
         setSelectedTitle(item)
-        console.log("item",item);
-        navigate(`/title/${title}`);  
+        navigate(`/title/${title}`, {state: {section: location.pathname}});  
     }
     return (
-        <>
+        <>        
             <div className="col-6 col-md-3">
                 <div className="card" onClick={handleClick}>                    
                     {item.backdrop_path ? (

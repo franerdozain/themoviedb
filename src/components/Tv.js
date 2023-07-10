@@ -1,27 +1,37 @@
 import { useState, useEffect } from 'react';
 import ContentList from './ContentList'
-import { getTvShows } from './Api';
-import { useLocation } from 'react-router-dom';
-import { getTvShowsByGenre } from './Api';
+import { getSearchedTitle, getTitlesByGenre, getTvShows } from './Api';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
-export default function Tv ({ genreId }) {
+export default function Tv ({ genreId, setSelectedTitle }) {
     const [tvShows, setTvShows] = useState([]);
     const location = useLocation();
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
+        console.log("inicio useef");
         async function fetchTvShows() {
+            let data = "";
+            const searchParam = searchParams.get("search");
+            console.log("este",searchParam);
+
             try {
-                const data = location.pathname === "/tv" ? await getTvShows() : await getTvShowsByGenre(genreId);
+                if(searchParam){
+                    data = await getSearchedTitle("tv", searchParam)                    
+                } else {
+                    data = location.pathname === "/tvShows" ? await getTvShows() : await getTitlesByGenre("tv", genreId);
+                }
+
                 setTvShows(data);
             } catch (error) {
                 console.log("Error: ", error);
             }
         }
         fetchTvShows()
-    }, [location.pathname, genreId])
+    }, [location.pathname, genreId, searchParams])
     return (
         <>
-            <ContentList content={tvShows}/>
+            <ContentList content={tvShows} setSelectedTitle={setSelectedTitle} />
         </>
     )
 }

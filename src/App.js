@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar';
 import { useState } from 'react';
 import TitlePage from './components/TitlePage';
+import SearchBar from './components/SearchBar';
 
 function App() {
   const [genreId, setGenreId] = useState(null);
@@ -13,7 +14,7 @@ function App() {
   
   return (
     <div className="App">
-      <Navbar setGenreId={setGenreId}/>
+      <Navbar setGenreId={setGenreId}/>      
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/movies' element={<Movies setSelectedTitle={setSelectedTitle}/>} />

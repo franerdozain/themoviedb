@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getGenres } from "./Api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../images/logo.png" 
+import SearchBar from "./SearchBar";
 
 export default function Navbar({ setGenreId }) {
     const [genres, setGenres] = useState([]);
@@ -22,7 +23,6 @@ export default function Navbar({ setGenreId }) {
             "movies": "movie",
             "tvShows": "tv",
         }
-        console.log(location.pathname.includes("title"));
         location.pathname !== "/" && !location.pathname.includes("/title") && fetchGenres(types[separateUrl[1]]);
     }, [location.pathname]) 
 
@@ -34,7 +34,7 @@ export default function Navbar({ setGenreId }) {
         navigate(`/${mediaType}/${genre.name}`);
     }
 
-    return (
+    return (    
         <nav>
             <div className='d-flex justify-content-center align-items-center'>
                 <Link to={"/"}>
@@ -51,10 +51,12 @@ export default function Navbar({ setGenreId }) {
                         {genres.length &&
                             genres.map(genre => (
                                 <li key={genre.id} className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>
-                            ))}
+                                ))}
                     </ul>
+                    <SearchBar />
                 </div>
             }
+            
         </nav>
     )
 }

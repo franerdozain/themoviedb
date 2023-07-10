@@ -9,3 +9,7 @@
   pointer-events: none;
 
 }
+
+.form-control {
+  width: 50%;
+}

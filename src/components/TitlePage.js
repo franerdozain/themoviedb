@@ -1,10 +1,11 @@
 import TitleCard from "./TitleCard";
 import {getTitleDetails} from "./Api";
 import { useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
 
 export default function TitlePage({ selectedTitle }) {
     const [titleDetails, setTitleDetails] = useState(null);
-
+    
     useEffect(() => {
 
         async function fetchSelectedTitle() {
