@@ -12,7 +12,7 @@ function App() {
   const [selectedTitle, setSelectedTitle] = useState(null);
   
   return (
-    <div className="App">
+    <div className="App d-flex flex-column align-items-center">
       <Navbar setGenreId={setGenreId}/>      
       <Routes>
         <Route path='/' element={<Home />} />

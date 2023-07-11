@@ -2,8 +2,8 @@ export default function TitleCard({ titleDetails }) {
     return (
         <>
             {titleDetails && (
-                <div className="col-12 col-md-12">
-                    <div className="card">
+                <div className="d-flex justify-content-center align-items-center">
+                    <div className="card col-6 col-md-4">
                         {titleDetails.backdrop_path ? (
                             <img src={`https://image.tmdb.org/t/p/w500/${titleDetails.backdrop_path || titleDetails.poster_path}`} className="card-img-top" alt={`${titleDetails.name || titleDetails.original_title} image`} />
                         ) : (

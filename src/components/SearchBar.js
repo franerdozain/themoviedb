@@ -23,7 +23,7 @@ export default function SearchBar() {
     }
 
     return (
-        <div>
+        <div className="d-flex justify-content-evenly">
             <input
                 className="form-control me-2 ms-3"
                 type="search" placeholder="Search" aria-label="Search"
