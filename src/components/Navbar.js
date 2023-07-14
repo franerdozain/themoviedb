@@ -6,6 +6,8 @@ import SearchBar from "./SearchBar";
 
 export default function Navbar({ setGenreId }) {
     const [genres, setGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState(null)
+    
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ export default function Navbar({ setGenreId }) {
         const fetchGenres = async (type) => {
             const data = await getGenres(type)
             setGenres(data)
+           
             let genre = data.find(genre => genre.name === decodedUrlGenre)
             genre && setGenreId(genre.id)
         }
@@ -23,20 +26,21 @@ export default function Navbar({ setGenreId }) {
             "movies": "movie",
             "tvShows": "tv",
         }
+        location.pathname === "/" && setSelectedGenre(null)
         location.pathname !== "/" && !location.pathname.includes("/title") && fetchGenres(types[separateUrl[1]]);
     }, [location.pathname])
 
     const handleCLick = (event) => {
         let genre = genres.find(genre => genre.name === event.target.innerText);
         genre && setGenreId(genre.id);
+        setSelectedGenre(event.target.innerText)
         let path = "";
         const separateUrl = location.pathname.split("/");
         if(separateUrl[1] === "title" && location.state && location.state.section){
             path = location.state.section.startsWith("/movies") ? "movies" : "tvShows"  
         } else if (separateUrl[1] === "movies" || separateUrl[1] === "tvShows"){
             path = separateUrl[1] === "movies" ? "movies" : "tvShows";
-        }
-        
+        }    
         navigate(`/${path}/${genre.name}`);
     }
 
@@ -52,12 +56,12 @@ export default function Navbar({ setGenreId }) {
             {location.pathname !== "/" &&
                 <div className="dropdown d-flex justify-content-center align-items-center">
                     <button className="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" aria-expanded="false" >
-                        Genres
+                       {selectedGenre ? selectedGenre : "Genres"}
                     </button>
                     <ul className="dropdown-menu">
                         {genres.length &&
                             genres.map(genre => (
-                                <li key={genre.id} className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>
+                                <li key={genre.id} role="button" className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>
                             ))}
                     </ul>
                     <SearchBar />
