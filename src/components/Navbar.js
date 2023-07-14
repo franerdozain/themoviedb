@@ -41,7 +41,7 @@ export default function Navbar({ setGenreId }) {
     }
 
     return (
-        <nav className="w-100 justify-content-evenly sticky-top sticky-bar bg-body-tertiary">
+        <nav className="d-flex w-100 justify-content-between sticky-top sticky-bar bg-body-tertiary">
             <div className='d-flex nav-div justify-content-center align-items-center'>
                 <Link to={"/"}>
                     <span role="button" ><img src={logo} className='homeLogo' /></span>
@@ -50,8 +50,8 @@ export default function Navbar({ setGenreId }) {
             </div>
             <div className="d-flex justify-content-center align-items-center " >
             {location.pathname !== "/" &&
-                <div className="dropdown d-flex justify-content-center align-items-center mb-4">
-                    <button className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" aria-expanded="false" >
+                <div className="dropdown d-flex justify-content-center align-items-center">
+                    <button className="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" aria-expanded="false" >
                         Genres
                     </button>
                     <ul className="dropdown-menu">

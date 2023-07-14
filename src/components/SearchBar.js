@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaGlobe, FaRegEdit, FaSearch } from 'react-icons/fa';
 
 export default function SearchBar() {
     const inputRef = useRef(null);
@@ -23,13 +24,15 @@ export default function SearchBar() {
     }
 
     return (
-        <div className="d-flex justify-content-evenly">
-            <input
-                className="form-control me-2 ms-3"
-                type="search" placeholder="Search" aria-label="Search"
-                ref={inputRef}
-            />
-            <button className="btn btn-primary" type="submit" onClick={handleClick}>Search</button>
+        <div className="container d-flex justify-content-around">
+            <div className="form-group text-center">
+                <div className="input-group">
+                    <input type="text" className="form-control" placeholder="Search" ref={inputRef} />
+                    <div className="input-group-append">
+                        <span className="input-group-text h-100"><FaSearch role="button" type="submit" onClick={handleClick}/></span>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
