@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import ContentList from './ContentList'
-import { getSearchedTitle, getTitlesByGenre, getTvShows } from './Api';
+import { getSearchedTitle, getTitles } from './Api';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Tv({ genreId, setSelectedTitle }) {
+    localStorage.clear();
     const [tvShows, setTvShows] = useState([]);
     const location = useLocation();
     const [searchParams] = useSearchParams();
@@ -12,12 +13,21 @@ export default function Tv({ genreId, setSelectedTitle }) {
         async function fetchTvShows() {
             let data = "";
             const searchParam = searchParams.get("search");
-            
+            const sortBy = searchParams.get("sort_by")
+
             try {
                 if (searchParam) {
                     data = await getSearchedTitle("tv", searchParam)
                 } else {
-                    data = location.pathname === "/tvShows" ? await getTvShows() : await getTitlesByGenre("tv", genreId);
+                    if (sortBy && genreId) {
+                        data = await getTitles("tv", genreId, sortBy)
+                    } else if (sortBy && !genreId) {
+                        data = await getTitles("tv", null, sortBy)
+                    } else if (!sortBy && genreId) {
+                        data = await getTitles("tv", genreId)
+                    } else {
+                        data = await getTitles("tv", null, null)
+                    }
                 }
 
                 setTvShows(data);

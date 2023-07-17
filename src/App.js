@@ -10,17 +10,15 @@ import TitlePage from './components/TitlePage';
 function App() {
   const [genreId, setGenreId] = useState(null);
   const [selectedTitle, setSelectedTitle] = useState(null);
-  
+
   return (
     <div className="App d-flex flex-column align-items-center">
-      <Navbar setGenreId={setGenreId}/>      
+      <Navbar setGenreId={setGenreId} />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/movies' element={<Movies setSelectedTitle={setSelectedTitle}/>} />
-        <Route path='/tvShows' element={<Tv setSelectedTitle={setSelectedTitle}/>} />  
-        <Route path='/movies/:genre' element={<Movies genreId={genreId} setSelectedTitle={setSelectedTitle} />} />
-        <Route path='/tvShows/:genre' element={<Tv genreId={genreId} setSelectedTitle={setSelectedTitle} />} />     
-        <Route path='/title/:title' element={<TitlePage selectedTitle={selectedTitle}/>} />          
+        <Route path='/movies' element={<Movies genreId={genreId} setSelectedTitle={setSelectedTitle} />} />
+        <Route path='/tvShows' element={<Tv genreId={genreId} setSelectedTitle={setSelectedTitle} />} />
+        <Route path='/title/:title' element={<TitlePage selectedTitle={selectedTitle} />} />
       </Routes>
     </div>
   );

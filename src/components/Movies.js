@@ -1,26 +1,36 @@
 import { useState, useEffect } from 'react';
 import ContentList from './ContentList';
-import { getMovies, getSearchedTitle, getTitlesByGenre } from './Api';
+import { getTitles, getSearchedTitle } from './Api';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Movies({ genreId, setSelectedTitle }) {
+    localStorage.clear();
     const [movies, setMovies] = useState([]);
     const location = useLocation();
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
         async function fetchMovies() {
-            const searchParam = searchParams.get("search")
+            const searchParam = searchParams.get("search");
+            const sortBy = searchParams.get("sort_by");
             let data = "";
+
             try {
                 if (searchParam) {
                     data = await getSearchedTitle("movie", searchParam)
                 } else {
-                    data = location.pathname === "/movies" ? await getMovies() : await getTitlesByGenre("movie", genreId)
+                    if (sortBy && genreId) {
+                        data = await getTitles("movie", genreId, sortBy)
+                    } else if (sortBy && !genreId) {
+                        data = await getTitles("movie", null, sortBy)
+                    } else if (!sortBy && genreId) {
+                        data = await getTitles("movie", genreId)
+                    } else {
+                        data = await getTitles("movie", null, null)
+                    }
                 }
 
                 setMovies(data);
-
             } catch (error) {
                 console.log("Error: ", error);
             }

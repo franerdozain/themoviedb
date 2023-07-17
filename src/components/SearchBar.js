@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaGlobe, FaRegEdit, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 export default function SearchBar() {
     const inputRef = useRef(null);
@@ -19,7 +19,7 @@ export default function SearchBar() {
             searchPath = `${location.state.section}?search=${searchInput}`
             inputRef.current.value = "";
         }
-        
+
         navigate(searchPath)
     }
 
@@ -29,7 +29,7 @@ export default function SearchBar() {
                 <div className="input-group">
                     <input type="text" className="form-control" placeholder="Search" ref={inputRef} />
                     <div className="input-group-append">
-                        <span className="input-group-text h-100"><FaSearch role="button" type="submit" onClick={handleClick}/></span>
+                        <span className="input-group-text h-100"><FaSearch role="button" type="submit" onClick={handleClick} /></span>
                     </div>
                 </div>
             </div>

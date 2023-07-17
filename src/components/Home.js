@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 export default function Home() {
+    localStorage.clear()
     return (
         <div >
             <h1 id='d-flex felx-column h1-home '>Welcome!</h1>

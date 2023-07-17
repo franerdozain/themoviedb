@@ -15,15 +15,31 @@ const getData = async (url) => {
     }
 }
 
-export async function getMovies() {
-    const data = await getData(`${BASE_URL}/discover/movie`)
-    return data.results;
-}
-
-export async function getTvShows () {
-    const data = await getData(`${BASE_URL}/discover/tv`)
-    return data.results;
-}
+export async function getTitles(type, genreId, sortBy) {   
+    let url = `${BASE_URL}/discover/${type}`;
+    const params = [];
+    
+    if(sortBy) {
+        if(sortBy === "Popular") {
+            params.push(`sort_by=popularity.desc`)
+        } else if (sortBy === "Top Rated") {
+            const greaterThanEqual = type === "movie" ? 1000 : 100;
+            params.push("sort_by=vote_average.desc", `vote_count.gte=${greaterThanEqual}`)
+        } else if (sortBy === "Upcoming"){
+            params.push("sort_by=primary_release_date.desc")
+        }
+    }
+    
+    if(genreId) params.push(`with_genres=${genreId}`)
+    
+    if(params.length ){
+        url += `?${params.join("&")}`
+    }
+   
+    const data = await getData(url)
+    return data.results
+    
+  }
 
 export async function getGenres (type) {
     const data = await getData(`${BASE_URL}/genre/${type}/list`)

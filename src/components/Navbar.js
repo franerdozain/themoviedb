@@ -1,51 +1,62 @@
 import { useEffect, useState } from "react";
 import { getGenres } from "./Api";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import logo from "../images/logo.png"
 import SearchBar from "./SearchBar";
+import Dropdown from "./Dropdown";
 
 export default function Navbar({ setGenreId }) {
     const [genres, setGenres] = useState([]);
-    const [selectedGenre, setSelectedGenre] = useState(null)
-    
+    const [selectedFilter, setSelectedFilter] = useState(null);
+    const [selectedGenre, setSelectedGenre] = useState(null);
     const location = useLocation();
-    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const filters = [
+        { name: "Popular", value: "popular" },
+        { name: "Top Rated", value: "top_rated" },
+        { name: "Upcoming", value: "upcoming" }
+    ];
 
     useEffect(() => {
         const separateUrl = location.pathname.split("/");
-        const decodedUrlGenre = decodeURIComponent(separateUrl[2]);
+        const genreParam = searchParams.get("genre");
+        const filterParam = searchParams.get("sort_by");
 
         const fetchGenres = async (type) => {
             const data = await getGenres(type)
+
             setGenres(data)
-           
-            let genre = data.find(genre => genre.name === decodedUrlGenre)
-            genre && setGenreId(genre.id)
+            if (location.pathname === "/movies/" || location.pathname === "/tvShows/") {
+
+                if (genreParam !== "All") {
+                    let genre = data.find(genre => genre.name === genreParam)
+                    genre && setGenreId(genre.id)
+                } else if (genreParam === "All") {
+                    setGenreId(null)
+                }
+            }
         }
+
         const types = {
             "movies": "movie",
             "tvShows": "tv",
         }
-        location.pathname === "/" && setSelectedGenre(null)
-        location.pathname !== "/" && !location.pathname.includes("/title") && fetchGenres(types[separateUrl[1]]);
-    }, [location.pathname])
 
-    const handleCLick = (event) => {
-        let genre = genres.find(genre => genre.name === event.target.innerText);
-        genre && setGenreId(genre.id);
-        setSelectedGenre(event.target.innerText)
-        let path = "";
-        const separateUrl = location.pathname.split("/");
-        if(separateUrl[1] === "title" && location.state && location.state.section){
-            path = location.state.section.startsWith("/movies") ? "movies" : "tvShows"  
-        } else if (separateUrl[1] === "movies" || separateUrl[1] === "tvShows"){
-            path = separateUrl[1] === "movies" ? "movies" : "tvShows";
-        }    
-        navigate(`/${path}/${genre.name}`);
-    }
+        if (location.pathname === "/") {
+            setSelectedFilter(null)
+            setSelectedGenre(null)
+            setGenreId(null)
+        }
+
+        if (genreParam) setSelectedGenre(genreParam)
+        if (filterParam) setSelectedFilter(filterParam)
+
+        location.pathname !== "/" && !location.pathname.includes("/title") && fetchGenres(types[separateUrl[1]]);
+    }, [location.pathname, searchParams])
 
     return (
-        <nav className="d-flex w-100 justify-content-between sticky-top sticky-bar bg-body-tertiary">
+        <nav className="d-flex w-100 justify-content-between sticky-top sticky-bar bg-body-tertiary mb-4">
             <div className='d-flex nav-div justify-content-center align-items-center'>
                 <Link to={"/"}>
                     <span role="button" ><img src={logo} className='homeLogo' /></span>
@@ -53,20 +64,26 @@ export default function Navbar({ setGenreId }) {
                 <h1>Movies & TV Shows</h1>
             </div>
             <div className="d-flex justify-content-center align-items-center " >
-            {location.pathname !== "/" &&
-                <div className="dropdown d-flex justify-content-center align-items-center">
-                    <button className="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" aria-expanded="false" >
-                       {selectedGenre ? selectedGenre : "Genres"}
-                    </button>
-                    <ul className="dropdown-menu">
-                        {genres.length &&
-                            genres.map(genre => (
-                                <li key={genre.id} role="button" className="dropdown-item" onClick={(event) => handleCLick(event)}>{genre.name}</li>
-                            ))}
-                    </ul>
-                    <SearchBar />
-                </div>
-            }
+                {location.pathname !== "/" &&
+                    <div className="d-flex justify-content-center align-items-center">
+
+                        <Dropdown
+                            dropdownType={"genres"}
+                            dropdownTitle={selectedGenre === "All" || !selectedGenre ? "Genres" : selectedGenre}
+                            filtersList={genres}
+                            setSelectedGenre={setSelectedGenre}
+                            selectedGenre={selectedGenre}
+                        />
+                        <Dropdown
+                            dropdownType={"filters"}
+                            dropdownTitle={selectedFilter === "Clear" || !selectedFilter ? "Filters" : selectedFilter}
+                            filtersList={filters}
+                            setSelectedFilter={setSelectedFilter}
+                            selectedFilter={selectedFilter}
+                        />
+                        <SearchBar />
+                    </div>
+                }
             </div>
         </nav>
     )
